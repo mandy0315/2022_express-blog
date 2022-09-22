@@ -1,6 +1,8 @@
-var express = require("express");
-var router = express.Router();
-
+const express = require("express");
+const router = express.Router();
+const firebaseDB = require("../utils/firebase_admin");
+const firebase = require("../utils/firebase_admin");
+// console.log("firebase", firebase);
 /* main page. */
 // 首頁
 router.get("/", function (req, res, next) {
