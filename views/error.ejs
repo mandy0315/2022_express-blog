@@ -1,3 +1,3 @@
-<h1><%= message %></h1>
-<h2><%= error.status %></h2>
-<pre><%= error.stack %></pre>
+<% layout('layout') %>
+<h1><%= error.status %> <%= message %></h1>
+<a href="/">回到首頁</a>
