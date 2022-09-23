@@ -1,7 +1,9 @@
 var express = require("express");
+const dayjs = require("dayjs");
 var router = express.Router();
 const firebaseDB = require("../utils/firebase_admin");
 const categoriesRef = firebaseDB.collection("categories");
+const articlesRef = firebaseDB.collection("articles");
 
 /* /dashboard/... page. */
 router.get("/", function (req, res, next) {
@@ -69,8 +71,69 @@ router.get("/archives", function (req, res, next) {
   res.render("dashboard/archives", { title: "六角部落格|文章管理" });
 });
 // 編輯頁
-router.get("/article", function (req, res, next) {
-  res.render("dashboard/article", { title: "六角部落格|文章編輯" });
+router
+  .route("/article/create")
+  .get(function (req, res, next) {
+    categoriesRef.get().then((snapshot) => {
+      let categoriesInfo = [];
+      let articleInfo = {};
+
+      snapshot.forEach((doc) => categoriesInfo.push(doc.data()));
+      res.render("dashboard/article", {
+        title: "六角部落格|文章編輯",
+        categoriesInfo,
+        articleInfo,
+      });
+    });
+  })
+  .post(function (req, res, next) {
+    let data = req.body;
+    const articleRef = articlesRef.doc();
+    const id = articleRef.id;
+    const update_time = dayjs().toJSON();
+    data.id = id;
+    data.update_time = update_time;
+
+    articleRef.set(data).then(() => {
+      res.redirect(`/dashboard/article/${id}`);
+    });
+  });
+
+router.get("/article/:id", function (req, res, next) {
+  const id = req.params.id;
+  let articleInfo = {};
+  // return categoriesRef.doc(id).get()
+  articlesRef
+    .doc(id)
+    .get()
+    .then((doc) => {
+      articleInfo = doc.data();
+      return categoriesRef.get();
+    })
+    .then((snapshot) => {
+      let categoriesInfo = [];
+      snapshot.forEach((doc) => categoriesInfo.push(doc.data()));
+
+      res.render("dashboard/article", {
+        title: "六角部落格|文章編輯",
+        categoriesInfo,
+        articleInfo,
+      });
+    });
 });
 
+router.post("/article/update/:id", function (req, res, next) {
+  const id = req.params.id;
+  const data = req.body;
+  const update_time = dayjs().toJSON();
+  data.id = id;
+  data.update_time = update_time;
+
+  articlesRef
+    .doc(id)
+    .update(data)
+    .then(() => {
+      res.redirect(`/dashboard/article/${id}`);
+    });
+});
 module.exports = router;

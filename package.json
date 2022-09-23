@@ -8,6 +8,7 @@
   "dependencies": {
     "connect-flash": "^0.1.1",
     "cookie-parser": "~1.4.4",
+    "dayjs": "^1.11.5",
     "debug": "~2.6.9",
     "dotenv": "^16.0.2",
     "ejs-locals": "^1.0.2",
