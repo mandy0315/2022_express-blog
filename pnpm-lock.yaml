@@ -13,6 +13,7 @@ specifiers:
   firebase-admin: ^11.0.1
   http-errors: ~1.6.3
   morgan: ~1.9.1
+  striptags: ^3.2.0
 
 dependencies:
   connect-flash: 0.1.1
@@ -27,6 +28,7 @@ dependencies:
   firebase-admin: 11.0.1
   http-errors: 1.6.3
   morgan: 1.9.1
+  striptags: 3.2.0
 
 packages:
 
@@ -2039,6 +2041,10 @@ packages:
     engines: {node: '>=8'}
     dependencies:
       ansi-regex: 5.0.1
+    dev: false
+
+  /striptags/3.2.0:
+    resolution: {integrity: sha512-g45ZOGzHDMe2bdYMdIvdAfCQkCTDMGBazSw1ypMowwGIee7ZQ5dU0rBJ8Jqgl+jAKIv4dbeE1jscZq9wid1Tkw==}
     dev: false
 
   /stubs/3.0.0:

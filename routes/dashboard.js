@@ -1,6 +1,7 @@
-var express = require("express");
+const express = require("express");
 const dayjs = require("dayjs");
-var router = express.Router();
+const striptags = require("striptags");
+const router = express.Router();
 const firebaseDB = require("../utils/firebase_admin");
 const categoriesRef = firebaseDB.collection("categories");
 const articlesRef = firebaseDB.collection("articles");
@@ -68,7 +69,30 @@ router.post("/categories/delete/:id", function (req, res, next) {
 
 // 文章管理
 router.get("/archives", function (req, res, next) {
-  res.render("dashboard/archives", { title: "六角部落格|文章管理" });
+  let categoriesInfo = [];
+  categoriesRef
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((doc) => {
+        categoriesInfo.push(doc.data());
+      });
+      return articlesRef.orderBy("update_time").get();
+    })
+    .then((snapshot) => {
+      let articlesInfo = [];
+      snapshot.forEach((doc) => {
+        articlesInfo.push(doc.data());
+      });
+      articlesInfo.reverse(); // 反轉 最新文章在上方
+
+      res.render("dashboard/archives", {
+        title: "六角部落格|文章管理",
+        articlesInfo,
+        categoriesInfo,
+        dayjs,
+        striptags,
+      });
+    });
 });
 // 編輯頁
 router

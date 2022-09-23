@@ -6,21 +6,21 @@
         >已發佈</a
       >
       <a href="#" class="rounded-0 w-100 btn btn-outline-secondary">草稿</a>
-      <a href="article.html" class="btn btn-primary">新增文章</a>
+      <a href="/dashboard/article/create" class="btn btn-primary">新增文章</a>
     </div>
 
+    <% articlesInfo.forEach(item =>{ %>
     <div class="my-3 card">
-      <h4 class="card-header">補充課程：Sass 與 includePaths</h4>
+      <h4 class="card-header"><%- item.title %></h4>
       <div class="card-body">
-        [程式][PHP] HTML
-        表單(Form)以陣列(Array)方式傳遞&lt;input&nbsp;type=&#39;text&#39;&gt;資訊。
-        什麼時候會用到這樣的方法，我無法明確表達，可能要靠你自己想像。
-        我遇到的狀況是要讓user不斷的新增商品與價格。 第一種做法：&nbsp;.....
+        <%- striptags(item.content).slice(0,150) %>...
         <div>
           <span class="fa fa-clock-o"></span>
-          2018/01/04 ,
+          <%- dayjs(item.update_time).format("YYYY/MM/DD") %> ,
           <span class="fa fa-folder-open-o"></span>
-          <span> 沒有分類 </span>
+          <span>
+            <%- categoriesInfo.filter(i => i.id === item.category)[0].name %>
+          </span>
         </div>
       </div>
       <div class="p-0 card-footer btn-group">
@@ -41,5 +41,6 @@
         >
       </div>
     </div>
+    <% }) %>
   </div>
 </div>
