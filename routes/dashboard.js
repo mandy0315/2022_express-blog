@@ -69,7 +69,9 @@ router.post("/categories/delete/:id", function (req, res, next) {
 
 // 文章管理
 router.get("/archives", function (req, res, next) {
+  const state = req.query.state || "public";
   let categoriesInfo = [];
+
   categoriesRef
     .get()
     .then((snapshot) => {
@@ -81,7 +83,9 @@ router.get("/archives", function (req, res, next) {
     .then((snapshot) => {
       let articlesInfo = [];
       snapshot.forEach((doc) => {
-        articlesInfo.push(doc.data());
+        if (doc.data()?.status === state) {
+          articlesInfo.push(doc.data());
+        }
       });
       articlesInfo.reverse(); // 反轉 最新文章在上方
 
@@ -91,7 +95,18 @@ router.get("/archives", function (req, res, next) {
         categoriesInfo,
         dayjs,
         striptags,
+        state,
       });
+    });
+});
+router.post("/archives/delete/:id", function (req, res, next) {
+  const id = req.params["id"];
+  articlesRef
+    .doc(id)
+    .delete()
+    .then(() => {
+      res.send("文章已刪除");
+      res.end(); // 結束回應
     });
 });
 // 編輯頁

@@ -2,45 +2,59 @@
 <div class="row justify-content-center">
   <div class="col-md-6">
     <div class="w-100 btn-group">
-      <a href="#" class="rounded-0 w-100 btn btn-outline-secondary active"
+      <a
+        href="/dashboard/archives?state=public"
+        class="rounded-0 w-100 btn btn-outline-secondary <% if(state === 'public'){ %> active <% } %>"
         >已發佈</a
       >
-      <a href="#" class="rounded-0 w-100 btn btn-outline-secondary">草稿</a>
+      <a
+        href="/dashboard/archives?state=draft"
+        class="rounded-0 w-100 btn btn-outline-secondary <% if(state === 'draft'){ %> active <% } %>"
+        >草稿</a
+      >
       <a href="/dashboard/article/create" class="btn btn-primary">新增文章</a>
     </div>
+    <div class="archive-list">
+      <% articlesInfo.forEach(item =>{ %>
+      <div class="my-3 card">
+        <h4 class="card-header"><%- item.title %></h4>
+        <div class="card-body">
+          <%- striptags(item.content).slice(0,150) %> <%
+          if(striptags(item.content).length > 150){ %> ... <%}%>
+          <div>
+            <span class="fa fa-clock-o"></span>
+            <%- dayjs(item.update_time).format("YYYY/MM/DD") %> ,
+            <span class="fa fa-folder-open-o"></span>
+            <span>
+              <%- categoriesInfo.filter(i => i.id === item.category)[0].name %>
+            </span>
+          </div>
+        </div>
+        <div class="p-0 card-footer btn-group">
+          <a
+            href="#"
+            class="rounded-0 btn btn-outline-danger deletePost"
+            data-id="<%- item.id %>"
+            data-title="<%- item.title %>"
+            >刪除</a
+          >
+          <a
+            href="/dashboard/article/<%- item.id %>"
+            class="rounded-0 w-100 btn btn-outline-secondary"
+            >編輯</a
+          >
 
-    <% articlesInfo.forEach(item =>{ %>
-    <div class="my-3 card">
-      <h4 class="card-header"><%- item.title %></h4>
-      <div class="card-body">
-        <%- striptags(item.content).slice(0,150) %>...
-        <div>
-          <span class="fa fa-clock-o"></span>
-          <%- dayjs(item.update_time).format("YYYY/MM/DD") %> ,
-          <span class="fa fa-folder-open-o"></span>
-          <span>
-            <%- categoriesInfo.filter(i => i.id === item.category)[0].name %>
-          </span>
+          <a
+            href="#"
+            target="_blank"
+            class="rounded-0 w-100 btn btn-outline-secondary"
+            >預覽</a
+          >
         </div>
       </div>
-      <div class="p-0 card-footer btn-group">
-        <a
-          href="#"
-          class="rounded-0 btn btn-outline-danger deletePost"
-          data-id="-L1zrsyiWCAbMQ5x8Plk"
-          data-title="補充課程：Sass 與 includePaths"
-          >刪除</a
-        >
-        <a href="#" class="rounded-0 w-100 btn btn-outline-secondary">編輯</a>
-
-        <a
-          href="#"
-          target="_blank"
-          class="rounded-0 w-100 btn btn-outline-secondary"
-          >預覽</a
-        >
-      </div>
+      <% }) %>
     </div>
-    <% }) %>
   </div>
 </div>
+
+<script src="/js/archives.js"></script>
