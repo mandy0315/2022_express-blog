@@ -41,30 +41,32 @@
 
   <body>
     <header class="bg-dark navbar navbar-expand-md navbar-dark">
-      <a class="navbar-brand" href="/dashboard/">Blog 控制台</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target="#navbarNavAltMarkup"
-        aria-controls="navbarNavAltMarkup"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-    
-      <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-        <div class="navbar-nav">
-          <a class="nav-item nav-link <% if(path ==='/dashboard/archives'){ %>active<% } %>" href="/dashboard/archives">
-            文章管理
-          </a>
-          <a class="nav-item nav-link <% if(/^(\/dashboard\/categories)/.test(path)){ %>active<% } %>" href="/dashboard/categories"
-            >分類管理
-          </a>
+      <div class="container">
+        <a class="navbar-brand" href="/dashboard/">Blog 控制台</a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-toggle="collapse"
+          data-target="#navbarNavAltMarkup"
+          aria-controls="navbarNavAltMarkup"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <a class="nav-item nav-link <% if(/^(\/dashboard\/archives)(\?state=[a-z]*)?$/.test(path)){ %>active<% } %>" href="/dashboard/archives">
+              文章管理
+            </a>
+            <a class="nav-item nav-link <% if(path === '/dashboard/categories'){ %>active<% } %>" href="/dashboard/categories"
+              >分類管理
+            </a>
+          </div>
         </div>
+        <a class="nav-link" href="/auth/signout">登出</a>
       </div>
-      <a class="nav-link" href="/auth/signout">登出</a>
     </header>
     <div class="container-fluid my-4 main"><%- content %></div>
     <footer class="bg-light mt-5 text-secondary text-center py-3">
