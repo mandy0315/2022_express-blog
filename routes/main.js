@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const firebaseDB = require("../utils/firebase_admin");
+const firebaseDB = require("../connections/firebase_admin");
 const categoriesRef = firebaseDB.collection("categories");
 const articlesRef = firebaseDB.collection("articles");
 const dayjs = require("dayjs");
 const striptags = require("striptags");
-const pagination = require("../public/js/pagination");
+const pagination = require("../modules/pagination");
 
 // 首頁
 router.get("/", function (req, res, next) {

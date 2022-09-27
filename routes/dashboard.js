@@ -2,7 +2,7 @@ const express = require("express");
 const dayjs = require("dayjs");
 const striptags = require("striptags");
 const router = express.Router();
-const firebaseDB = require("../utils/firebase_admin");
+const firebaseDB = require("../connections/firebase_admin");
 const categoriesRef = firebaseDB.collection("categories");
 const articlesRef = firebaseDB.collection("articles");
 
