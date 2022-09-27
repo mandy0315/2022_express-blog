@@ -1,0 +1,45 @@
+<% extend('./layouts/layout') %>
+
+<div class="my-4 row justify-content-center">
+  <div class="col-md-9">
+    <% if(path === '/categories/' + articlesInfo[0].category.toLowerCase()){ %>
+      <h1 class="text-primary mb-2"><%- articlesInfo[0].category %></h1>
+    <% }else if(path === '/posts') { %>
+      <h1 class="text-primary mb-2">所有文章</h1>
+    <% } %>
+    <% articlesInfo.forEach(item =>{ %>
+      <div class="mb-3 card">
+        <div class="card-body">
+          <a href="/post/<%- item.id %>">
+            <h2 class="text-primary"><%- item.title %></h2></a
+          >
+          <div class="flex-row text-secondary d-flex small">
+            <div class="p-2">
+              <span class="fa fa-clock-o"></span> 
+              <%- dayjs(item.update_time).format("YYYY/MM/DD") %>
+            </div>
+            <% if(path !== '/categories/' + item.category.toLowerCase()){ %>
+              <div class="p-2">
+                <i class="fa fa-tag" aria-hidden="true"></i>
+                <a
+                  href="/categories/<%- item.category.toLowerCase() %>"
+                  class="text-info"
+                  ><%- item.category %>
+                </a>
+              </div>
+            <%}%>
+          </div>
+
+          <div>
+            <%- striptags(item.content).slice(0,150) %> 
+            <% if(striptags(item.content).length > 150){ %> ... <%}%>
+          </div>
+        </div>
+      </div>
+    <% }) %>
+  </div>
+</div>
+
+<%- include('./components/pagination') %>
+
+

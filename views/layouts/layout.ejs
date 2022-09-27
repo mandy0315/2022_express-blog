@@ -6,7 +6,7 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
-    <title><%= title %></title>
+    <title>六角部落格|<%= title %></title>
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
@@ -54,14 +54,23 @@
       </button>
       <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
         <div class="ml-auto navbar-nav">
-          <a class="nav-item nav-link" href="#"
-            >心得 <span class="sr-only">(current)</span></a
-          >
+          <a 
+            class="nav-item nav-link <% if(path ==='/posts'){ %>active<% } %>" 
+            href="/posts"
+          >Posts</a>
+          <a 
+            class="nav-item nav-link <% if(path ==='/categories'){ %>active<% } %>" 
+            href="/categories"
+          >Categories</a>
+          <a
+            class="nav-item nav-link <% if(path ==='/about'){ %>active<% } %>" 
+            href="/about"
+          >About</a>
         </div>
       </div>
     </header>
 
-    <div class="container"><%- body %></div>
+    <div class="container"><%- content %></div>
 
     <footer class="bg-light text-muted py-5">
       <div class="container">

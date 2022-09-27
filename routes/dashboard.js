@@ -6,13 +6,15 @@ const firebaseDB = require("../utils/firebase_admin");
 const categoriesRef = firebaseDB.collection("categories");
 const articlesRef = firebaseDB.collection("articles");
 
-/* /dashboard/... page. */
+// 後台首頁
 router.get("/", function (req, res, next) {
   res.redirect("/dashboard/signup");
 });
+// 後台登入
 router.get("/signup", function (req, res, next) {
   res.render("dashboard/signup", { title: "六角部落格|後台登入" });
 });
+
 // 分類管理
 router.get("/categories", function (req, res, next) {
   const messages = req.flash("info");
@@ -29,7 +31,6 @@ router.get("/categories", function (req, res, next) {
     });
   });
 });
-
 router.post("/categories/create", function (req, res, next) {
   const data = req.body;
 
@@ -55,7 +56,6 @@ router.post("/categories/create", function (req, res, next) {
       console.log("成功");
     });
 });
-
 router.post("/categories/delete/:id", function (req, res, next) {
   const id = req.params["id"];
   categoriesRef
@@ -109,7 +109,8 @@ router.post("/archives/delete/:id", function (req, res, next) {
       res.end(); // 結束回應
     });
 });
-// 編輯頁
+
+// 文章建立
 router
   .route("/article/create")
   .get(function (req, res, next) {
@@ -141,7 +142,6 @@ router
 router.get("/article/:id", function (req, res, next) {
   const id = req.params.id;
   let articleInfo = {};
-  // return categoriesRef.doc(id).get()
   articlesRef
     .doc(id)
     .get()

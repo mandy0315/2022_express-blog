@@ -3,7 +3,7 @@ const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
-const engine = require("ejs-locals");
+const engine = require("express-ejs-extend");
 const session = require("express-session");
 const flash = require("connect-flash");
 

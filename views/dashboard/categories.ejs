@@ -1,40 +1,43 @@
-<% layout('/dashboard/layout') %>
+<% extend('../layouts/dashboardLayout') %>
 
 <div class="row justify-content-center">
   <div class="col-md-6">
     <% messages.forEach(item=>{ %>
-    <div class="alert alert-warning"><%- item %></div>
+      <div class="alert alert-warning"><%- item %></div>
     <% }) %>
     <table class="table">
       <thead>
         <tr>
           <th>名稱</th>
           <th>路徑</th>
-          <th width="30"></th>
+          <th width="60"></th>
         </tr>
       </thead>
       <tbody>
         <% categoriesData.forEach((item) =>{ %>
-        <tr>
-          <td class="align-middle"><%- item.name %></td>
-          <td>
-            <input
-              type="text"
-              class="form-control form-control-sm"
-              value="<%- item.path %>"
-            />
-          </td>
-          <td class="align-middle">
-            <form
-              action="/dashboard/categories/delete/<%- item.id %>"
-              method="POST"
-            >
-              <button type="submit" class="btn btn-outline-danger btn-sm">
-                刪除
-              </button>
-            </form>
-          </td>
-        </tr>
+          <tr>
+            <td class="align-middle">
+              <%- item.name %>
+            </td>
+            <td>
+              <input
+                type="text"
+                class="form-control form-control-sm"
+                value="<%- item.path %>"
+                disabled
+              />
+            </td>
+            <td class="d-flex align-middle">
+              <form
+                action="/dashboard/categories/delete/<%- item.id %>"
+                method="POST"
+              >
+                <button type="submit" class="btn btn-outline-danger btn-sm">
+                  刪除
+                </button>
+              </form>
+            </td>
+          </tr>
         <% }) %>
       </tbody>
     </table>
@@ -66,7 +69,7 @@
         </tr>
       </table>
       <div class="text-right">
-        <button type="submit" class="btn btn-primary">更新資訊</button>
+        <button type="submit" class="btn btn-primary">新增分類</button>
       </div>
     </form>
   </div>
