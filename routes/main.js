@@ -9,7 +9,7 @@ const pagination = require("../public/js/pagination");
 
 // 首頁
 router.get("/", function (req, res, next) {
-  const path = req.path;
+  const path = req.originalUrl;
   articlesRef
     .orderBy("update_time")
     .get()
@@ -32,7 +32,7 @@ router.get("/", function (req, res, next) {
 
       res.render("archives", {
         title: "六角部落格|首頁",
-        path: path,
+        path,
         articlesInfo: result.data,
         page: result.page,
         dayjs,
@@ -43,7 +43,7 @@ router.get("/", function (req, res, next) {
 
 // 文章頁
 router.get("/posts", function (req, res, next) {
-  const path = req.path;
+  const path = req.originalUrl;
   articlesRef
     .orderBy("update_time")
     .get()
@@ -66,7 +66,7 @@ router.get("/posts", function (req, res, next) {
 
       res.render("archives", {
         title: "六角部落格|文章列表",
-        path: path,
+        path,
         articlesInfo: result.data,
         page: result.page,
         dayjs,
@@ -77,7 +77,7 @@ router.get("/posts", function (req, res, next) {
 router.get("/post/:id", function (req, res, next) {
   const id = req.params.id;
   let categoriesInfo = [];
-  const path = req.path;
+  const path = req.originalUrl;
 
   categoriesRef
     .get()
@@ -89,7 +89,7 @@ router.get("/post/:id", function (req, res, next) {
       const articleInfo = doc.data();
       res.render("post", {
         title: "六角部落格|文章內頁",
-        path: path,
+        path,
         categoriesInfo,
         articleInfo,
         dayjs,
@@ -101,7 +101,7 @@ router.get("/post/:id", function (req, res, next) {
 // 分類頁
 router.get("/categories", function (req, res, next) {
   let categoriesInfo = [];
-  const path = req.path;
+  const path = req.originalUrl;
 
   categoriesRef
     .get()
@@ -129,7 +129,7 @@ router.get("/categories", function (req, res, next) {
       });
       res.render("categories", {
         title: "六角部落格|分類",
-        path: path,
+        path,
         categoriesInfo,
         filterArticlesInfo,
       });
@@ -137,7 +137,7 @@ router.get("/categories", function (req, res, next) {
 });
 router.get("/categories/:kind", function (req, res, next) {
   const kind = req.params.kind;
-  const path = req.path;
+  const path = req.originalUrl;
 
   articlesRef
     .orderBy("update_time")
@@ -165,7 +165,7 @@ router.get("/categories/:kind", function (req, res, next) {
 
       res.render("archives", {
         title: `六角部落格|${kind} 列表`,
-        path: path,
+        path,
         articlesInfo: result.data,
         page: result.page,
         dayjs,

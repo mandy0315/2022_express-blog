@@ -12,11 +12,16 @@ router.get("/", function (req, res, next) {
 });
 // 後台登入
 router.get("/signup", function (req, res, next) {
-  res.render("dashboard/signup", { title: "六角部落格|後台登入" });
+  const path = req.originalUrl;
+  res.render("dashboard/signup", { 
+    title: "六角部落格|後台登入",
+    path,
+  });
 });
 
 // 分類管理
 router.get("/categories", function (req, res, next) {
+  const path = req.originalUrl;
   const messages = req.flash("info");
 
   categoriesRef.get().then((snapshot) => {
@@ -25,6 +30,7 @@ router.get("/categories", function (req, res, next) {
 
     res.render("dashboard/categories", {
       title: "六角部落格|分類管理",
+      path,
       categoriesData,
       messages,
       hasMessages: messages.length > 0,
@@ -69,6 +75,7 @@ router.post("/categories/delete/:id", function (req, res, next) {
 
 // 文章管理
 router.get("/archives", function (req, res, next) {
+  const path = req.originalUrl;
   const state = req.query.state || "public";
   let categoriesInfo = [];
 
@@ -91,6 +98,7 @@ router.get("/archives", function (req, res, next) {
 
       res.render("dashboard/archives", {
         title: "六角部落格|文章管理",
+        path,
         articlesInfo,
         categoriesInfo,
         dayjs,
@@ -114,6 +122,7 @@ router.post("/archives/delete/:id", function (req, res, next) {
 router
   .route("/article/create")
   .get(function (req, res, next) {
+    const path = req.originalUrl;
     categoriesRef.get().then((snapshot) => {
       let categoriesInfo = [];
       let articleInfo = {};
@@ -121,6 +130,7 @@ router
       snapshot.forEach((doc) => categoriesInfo.push(doc.data()));
       res.render("dashboard/article", {
         title: "六角部落格|文章編輯",
+        path,
         categoriesInfo,
         articleInfo,
       });
@@ -140,7 +150,9 @@ router
   });
 
 router.get("/article/:id", function (req, res, next) {
+  const path = req.originalUrl;
   const id = req.params.id;
+
   let articleInfo = {};
   articlesRef
     .doc(id)
@@ -155,6 +167,7 @@ router.get("/article/:id", function (req, res, next) {
 
       res.render("dashboard/article", {
         title: "六角部落格|文章編輯",
+        path,
         categoriesInfo,
         articleInfo,
       });
