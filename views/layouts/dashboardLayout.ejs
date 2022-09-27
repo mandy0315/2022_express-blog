@@ -59,7 +59,7 @@
           <a class="nav-item nav-link <% if(path ==='/dashboard/archives'){ %>active<% } %>" href="/dashboard/archives">
             文章管理
           </a>
-          <a class="nav-item nav-link <% if(path ==='/dashboard/categories'){ %>active<% } %>" href="/dashboard/categories"
+          <a class="nav-item nav-link <% if(/^(\/dashboard\/categories)/.test(path)){ %>active<% } %>" href="/dashboard/categories"
             >分類管理
           </a>
         </div>

@@ -64,9 +64,32 @@ router.post("/categories/create", function (req, res, next) {
 });
 router.post("/categories/delete/:id", function (req, res, next) {
   const id = req.params["id"];
+
   categoriesRef
-    .doc(id)
-    .delete()
+    .get()
+    .then((snapshot) => {
+      let categoriesInfo = [];
+      snapshot.forEach((doc) => {
+        categoriesInfo.push(doc.data());
+      });
+      const categoryName = categoriesInfo.filter(category=>category.id ===id)[0]?.name
+      return articlesRef.where('category','==',categoryName).get()
+    })
+    .then((snapshot)=>{
+      let articlesInfo = [];
+      snapshot.forEach(doc =>{
+        articlesInfo.push(doc.data())
+      })
+      if(articlesInfo.length > 0){
+        articlesInfo.forEach(article =>{
+          articlesRef.doc(article.id).update({
+            category: '沒有分類',
+            status: 'draft',
+          })
+        })
+      }
+      return categoriesRef.doc(id).delete()
+    })
     .then(() => {
       req.flash("info", "欄位已刪除");
       res.redirect("/dashboard/categories");
