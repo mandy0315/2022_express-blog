@@ -41,6 +41,16 @@ router.get("/", function (req, res, next) {
     });
 });
 
+// 關於我
+router.get("/about",function(req, res, next) {
+  const path = req.originalUrl;
+  
+  res.render('about',{
+    title: "六角部落格|首頁",
+    path,
+  })
+})
+
 // 文章頁
 router.get("/posts", function (req, res, next) {
   const path = req.originalUrl;
