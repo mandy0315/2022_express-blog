@@ -97,6 +97,16 @@ router.get("/post/:id", function (req, res, next) {
     })
     .then((doc) => {
       const articleInfo = doc.data();
+
+      // 404
+      if (!articleInfo) {
+        return res.render('error', {
+          title: "六角部落格|文章不存在",
+          path,
+          massage: "您所查看的文章不存在",
+        });
+      }
+
       res.render("post", {
         title: "六角部落格|文章內頁",
         path,
@@ -105,7 +115,7 @@ router.get("/post/:id", function (req, res, next) {
         dayjs,
         striptags,
       });
-    });
+    })
 });
 
 // 分類頁
@@ -165,6 +175,16 @@ router.get("/categories/:kind", function (req, res, next) {
       });
       articlesInfo.reverse();
 
+      // 404
+      if (articlesInfo.length === 0) {
+        console.log('yes');
+        return res.render('error', {
+          title: "六角部落格|類別不存在",
+          path,
+          massage: "您輸入的類別不存在",
+        });
+      }
+
       // 分頁
       const result = pagination({
         articlesInfo,
@@ -172,6 +192,8 @@ router.get("/categories/:kind", function (req, res, next) {
         perPage: 3,
       });
       // 分頁結束
+
+   
 
       res.render("archives", {
         title: `六角部落格|${kind} 列表`,
