@@ -21,10 +21,10 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
 app.use(
   session({
-    secret: "keyboard",
+    secret: "myblog",
     resave: true,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 10 * 1000 },
+    // cookie: { secure: false, maxAge: 10 * 1000 },
   })
 );
 app.use(flash());
@@ -32,8 +32,10 @@ app.use(flash());
 // router
 const mainRouter = require("./routes/main");
 const dashboardRouter = require("./routes/dashboard");
+const memberRouter = require("./routes/member");
 app.use("/", mainRouter);
 app.use("/dashboard", dashboardRouter);
+app.use("/member", memberRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

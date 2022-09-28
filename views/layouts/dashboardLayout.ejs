@@ -54,18 +54,25 @@
         >
           <span class="navbar-toggler-icon"></span>
         </button>
-      
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-          <div class="navbar-nav">
-            <a class="nav-item nav-link <% if(/^(\/dashboard\/archives)(\?state=[a-z]*)?$/.test(path)){ %>active<% } %>" href="/dashboard/archives">
-              文章管理
-            </a>
-            <a class="nav-item nav-link <% if(path === '/dashboard/categories'){ %>active<% } %>" href="/dashboard/categories"
-              >分類管理
-            </a>
+        <% if(hasMemberId) {%>
+          <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <div class="navbar-nav">
+              <a class="nav-item nav-link <% if(/^(\/dashboard\/archives)(\?state=[a-z]*)?$/.test(path)){ %>active<% } %>" href="/dashboard/archives">
+                文章管理
+              </a>
+              <a class="nav-item nav-link <% if(path === '/dashboard/categories'){ %>active<% } %>" href="/dashboard/categories"
+                >分類管理
+              </a>
+            </div>
           </div>
-        </div>
-        <a class="nav-link" href="/auth/signout">登出</a>
+        <% } %>
+        <% if(!hasMemberId) {%>
+          <a class="ml-auto nav-link" href="/member/signup">註冊</a>
+          <a class="nav-link" href="/member/signin">登入</a>
+        <% } else { %>
+          <p class="my-auto text-white">您好 <%- memberName %></p>
+          <a class="nav-link" href="/member/signout">登出</a>
+        <% } %>
       </div>
     </header>
     <div class="container-fluid my-4 main"><%- content %></div>

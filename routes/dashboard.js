@@ -5,24 +5,37 @@ const router = express.Router();
 const firebaseDB = require("../connections/firebase_admin");
 const categoriesRef = firebaseDB.collection("categories");
 const articlesRef = firebaseDB.collection("articles");
+require('dotenv').config()
+
+router.use(function(req, res, next) {
+  // 只有 mandy@gmail.com 帳戶能用
+  if (req.session.uid === process.env.USER_UID) {
+    next()
+  } else {
+    res.redirect('/member/signin')
+  }
+})
 
 // 後台首頁
 router.get("/", function (req, res, next) {
-  res.redirect("/dashboard/signup");
-});
-// 後台登入
-router.get("/signup", function (req, res, next) {
   const path = req.originalUrl;
-  res.render("dashboard/signup", { 
-    title: "六角部落格|後台登入",
+  const hasMemberId = req.session.uid;
+  const memberName = req.session.nickname;
+
+  res.render('dashboard/index', {
+    title: "六角部落格|首頁",
     path,
-  });
+    hasMemberId,
+    memberName,
+  })
 });
 
 // 分類管理
 router.get("/categories", function (req, res, next) {
   const path = req.originalUrl;
   const messages = req.flash("info");
+  const hasMemberId = req.session.uid;
+  const memberName = req.session.nickname;
 
   categoriesRef.get().then((snapshot) => {
     let categoriesData = [];
@@ -31,6 +44,8 @@ router.get("/categories", function (req, res, next) {
     res.render("dashboard/categories", {
       title: "六角部落格|分類管理",
       path,
+      hasMemberId,
+      memberName,
       categoriesData,
       messages,
       hasMessages: messages.length > 0,
@@ -101,6 +116,8 @@ router.get("/archives", function (req, res, next) {
   const path = req.originalUrl;
   const state = req.query.state || "public";
   let categoriesInfo = [];
+  const hasMemberId = req.session.uid;
+  const memberName = req.session.nickname;
 
   categoriesRef
     .get()
@@ -122,6 +139,8 @@ router.get("/archives", function (req, res, next) {
       res.render("dashboard/archives", {
         title: "六角部落格|文章管理",
         path,
+        hasMemberId,
+        memberName,
         articlesInfo,
         categoriesInfo,
         dayjs,
@@ -146,6 +165,9 @@ router
   .route("/article/create")
   .get(function (req, res, next) {
     const path = req.originalUrl;
+    const hasMemberId = req.session.uid;
+    const memberName = req.session.nickname;
+
     categoriesRef.get().then((snapshot) => {
       let categoriesInfo = [];
       let articleInfo = {};
@@ -154,6 +176,8 @@ router
       res.render("dashboard/article", {
         title: "六角部落格|文章編輯",
         path,
+        hasMemberId,
+        memberName,
         categoriesInfo,
         articleInfo,
       });
@@ -175,6 +199,8 @@ router
 router.get("/article/:id", function (req, res, next) {
   const path = req.originalUrl;
   const id = req.params.id;
+  const hasMemberId = req.session.uid;
+  const memberName = req.session.nickname;
 
   let articleInfo = {};
   articlesRef
@@ -191,6 +217,8 @@ router.get("/article/:id", function (req, res, next) {
       res.render("dashboard/article", {
         title: "六角部落格|文章編輯",
         path,
+        hasMemberId,
+        memberName,
         categoriesInfo,
         articleInfo,
       });
